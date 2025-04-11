@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Royal Ring Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #5a0a0a 10%, #2c0202 90%);
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      perspective: 1000px;
+      font-family: 'Cinzel Decorative', cursive;
+    }
+
+    .box-container {
+      position: relative;
+      width: 250px;
+      height: 250px;
+      transform-style: preserve-3d;
+    }
+
+    .box {
+      width: 120px;
+      height: 120px;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-20deg) rotateY(20deg);
+    }
+
+    .side {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(145deg, #d3d3d3, #a0a0a0);
+      border: 6px solid #800080;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+      color: #444;
+      letter-spacing: 2px;
+    }
+
+    .front  { transform: rotateY(0deg) translateZ(60px); }
+    .back   { transform: rotateY(180deg) translateZ(60px); }
+    .right  { transform: rotateY(90deg) translateZ(60px); }
+    .left   { transform: rotateY(-90deg) translateZ(60px); }
+    .bottom { transform: rotateX(-90deg) translateZ(60px); }
+
+    .lid {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(145deg, #d3d3d3, #a0a0a0);
+      border: 6px solid #800080;
+      transform: rotateX(90deg) translateZ(60px);
+      transform-origin: back;
+      transition: transform 1s ease;
+    }
+
+    .box.open .lid {
+      transform: rotateX(0deg) translateZ(120px) translateY(60px);
+    }
+
+    .ring {
+      width: 50px;
+      height: 50px;
+      border: 6px solid gold;
+      border-radius: 50%;
+      background: transparent;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 60px) scale(0.4);
+      opacity: 0;
+      transition: transform 1s ease, opacity 1s ease;
+      z-index: 10;
+      box-shadow:
+        0 0 8px #ffef9f,
+        0 0 16px gold;
+    }
+
+    .ring .diamond {
+      width: 24px;
+      height: 24px;
+      background: linear-gradient(145deg, #e6f9ff, #ffffff, #ccefff);
+      clip-path: polygon(
+        50% 0%,
+        80% 20%,
+        100% 50%,
+        80% 80%,
+        50% 100%,
+        20% 80%,
+        0% 50%,
+        20% 20%
+      );
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: glowDiamond 2s infinite ease-in-out;
+      box-shadow:
+        0 0 14px rgba(255, 255, 255, 0.6),
+        0 0 26px rgba(173, 216, 230, 0.5),
+        0 0 38px rgba(255, 255, 255, 0.3);
+    }
+
+    @keyframes glowDiamond {
+      0%, 100% {
+        box-shadow:
+          0 0 14px rgba(255, 255, 255, 0.6),
+          0 0 26px rgba(173, 216, 230, 0.5),
+          0 0 38px rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        box-shadow:
+          0 0 26px rgba(255, 255, 255, 1),
+          0 0 40px rgba(173, 216, 230, 0.9),
+          0 0 60px rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .box.open .ring {
+      transform: translate(-50%, -60px) scale(1);
+      opacity: 1;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 14px 40px;
+      font-size: 18px;
+      background: linear-gradient(to right, #b9935f, #8ca6db);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(255, 215, 0, 0.6);
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    button:hover {
+      background: linear-gradient(to right, #8ca6db, #b9935f);
+      transform: scale(1.05);
+    }
+
+    #pickupBtn {
+      display: none;
+    }
+
+    #pickupBtn.show {
+      display: block;
+      margin-top: 12px;
+      animation: fadeIn 0.8s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .box-container {
+        transform: scale(0.9);
+      }
+
+      button {
+        font-size: 16px;
+        padding: 10px 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box-container">
+    <div class="box" id="ringBox">
+      <div class="side front">A ❤️ A</div>
+      <div class="side back"></div>
+      <div class="side right"></div>
+      <div class="side left"></div>
+      <div class="side bottom"></div>
+
+      <div class="lid"></div>
+
+      <div class="ring">
+        <div class="diamond"></div>
+      </div>
+    </div>
+  </div>
+
+  <button id="toggleBtn">Open</button>
+  <button id="pickupBtn">Ambil Cincin</button>
+
+  <script>
+    const box = document.getElementById("ringBox");
+    const btn = document.getElementById("toggleBtn");
+    const pickupBtn = document.getElementById("pickupBtn");
+    let isOpen = false;
+
+    btn.addEventListener("click", () => {
+      isOpen = !isOpen;
+      box.classList.toggle("open", isOpen);
+      btn.textContent = isOpen ? "Close" : "Open";
+      pickupBtn.classList.toggle("show", isOpen);
+    });
+
+    pickupBtn.addEventListener("click", () => {
+      window.location.href = "ring-view.html";
+    });
+  </script>
+</body>
+</html>

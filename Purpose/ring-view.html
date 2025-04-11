@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shining Royal Diamond Ring</title>
+  <style>
+    body {
+      background: radial-gradient(circle at center, #5a0a0a 10%, #2c0202 90%);
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .ring-large {
+      width: 160px;
+      height: 160px;
+      border: 10px solid gold;
+      border-radius: 50%;
+      background: transparent;
+      position: relative;
+      box-shadow:
+        0 0 18px #ffef9f,
+        0 0 32px gold,
+        0 0 48px rgba(255, 215, 0, 0.5);
+    }
+
+    .diamond-large {
+      position: absolute;
+      top: -44px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(145deg, #e6f9ff, #ffffff, #ccefff);
+      clip-path: polygon(
+        50% 0%,
+        80% 20%,
+        100% 50%,
+        80% 80%,
+        50% 100%,
+        20% 80%,
+        0% 50%,
+        20% 20%
+      );
+      animation: glowDiamond 2s infinite ease-in-out;
+      box-shadow:
+        0 0 18px rgba(255, 255, 255, 0.8),
+        0 0 32px rgba(173, 216, 230, 0.7),
+        0 0 48px rgba(255, 255, 255, 0.5);
+    }
+
+    @keyframes glowDiamond {
+      0%, 100% {
+        box-shadow:
+          0 0 14px rgba(255, 255, 255, 0.6),
+          0 0 26px rgba(173, 216, 230, 0.5),
+          0 0 38px rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        box-shadow:
+          0 0 26px rgba(255, 255, 255, 1),
+          0 0 40px rgba(173, 216, 230, 0.9),
+          0 0 60px rgba(255, 255, 255, 0.8);
+      }
+    }
+
+    .video-wrapper {
+      width: 480px;
+      aspect-ratio: 4 / 3;
+      background: #1e1e1e;
+      border: 4px solid gold;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .controls {
+      display: flex;
+      gap: 12px;
+      margin-top: -20px;
+    }
+
+    .controls button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 20px;
+      background: linear-gradient(to right, #b9935f, #8ca6db);
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.5);
+      transition: background 0.3s ease;
+    }
+
+    .controls button:hover {
+      background: linear-gradient(to right, #8ca6db, #b9935f);
+    }
+  </style>
+</head>
+<body>
+  <div class="ring-large">
+    <div class="diamond-large"></div>
+  </div>
+
+  <div class="video-wrapper">
+    <video id="video">
+      <source src="cintaterakhir.mp4" type="video/mp4">
+      Browser kamu tidak mendukung video ini.
+    </video>
+  </div>
+
+  <div class="controls">
+    <button id="toggleBtn">▶ Play</button>
+    <button id="restartBtn">⏮ Restart</button>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const restartBtn = document.getElementById('restartBtn');
+
+    // Inisialisasi
+    video.pause();
+    video.currentTime = 0;
+    video.muted = false;
+
+    // Toggle Play/Pause
+    toggleBtn.addEventListener('click', () => {
+      if (video.paused || video.ended) {
+        video.play();
+        toggleBtn.textContent = '⏸ Pause';
+      } else {
+        video.pause();
+        toggleBtn.textContent = '▶ Play';
+      }
+    });
+
+    // Restart Video
+    restartBtn.addEventListener('click', () => {
+      video.currentTime = 0;
+      video.play();
+      toggleBtn.textContent = '⏸ Pause';
+    });
+
+    // Update tombol otomatis saat video selesai
+    video.addEventListener('ended', () => {
+      toggleBtn.textContent = '▶ Play';
+    });
+  </script>
+</body>
+</html>
